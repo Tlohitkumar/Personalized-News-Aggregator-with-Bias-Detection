@@ -1,5 +1,5 @@
 package com.example.news.service;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.news.model.User;
@@ -13,6 +13,10 @@ public class UserService {
 	
 	public User registerUser(User user) {
 		return userRepository.save(user);
+	}
+	
+	public List<User> getAllUsers() {
+	    return userRepository.findAll();
 	}
 }
 
