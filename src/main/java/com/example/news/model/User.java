@@ -1,5 +1,7 @@
 package com.example.news.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class User {
 
     private String name;
     private String email;
+//    @JsonIgnore                -> HIDE THE PASSWORD IN JSON
     private String password;
     
     public User() {}
