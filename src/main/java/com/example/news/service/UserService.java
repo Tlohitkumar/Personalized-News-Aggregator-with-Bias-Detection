@@ -38,6 +38,17 @@ public class UserService {
 	    }
 	    return null;
 	}
+	
+	
+	public User login(String email, String password) {
+	    User user = userRepository.findByEmail(email).orElse(null);
+
+	    if (user != null && user.getPassword().equals(password)) {
+	        return user;
+	    }
+	    return null;
+	}
+	
 }
 
 
