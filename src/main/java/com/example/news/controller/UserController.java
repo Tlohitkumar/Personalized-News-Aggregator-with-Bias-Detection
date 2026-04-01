@@ -51,4 +51,18 @@ public class UserController {
 		public User updateUser(@PathVariable Long id, @RequestBody User user) {
 		    return userService.updateUser(id, user);
 		}
+		
+		
+		//Validating User Details
+		@PostMapping("/login")
+		public String login(@RequestBody User user) {
+
+		    User validUser = userService.login(user.getEmail(), user.getPassword());
+
+		    if (validUser != null) {
+		        return "Login Success ✅";
+		    } else {
+		        return "Invalid Email or Password ❌";
+		    }
+		}
 }
