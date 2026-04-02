@@ -54,15 +54,20 @@ public class UserController {
 		
 		
 		//Validating User Details
+//		@PostMapping("/login")
+//		public String login(@RequestBody User user) {
+//
+//		    User validUser = userService.login(user.getEmail(), user.getPassword());
+//
+//		    if (validUser != null) {
+//		        return "Login Success ✅";
+//		    } else {
+//		        return "Invalid Email or Password ❌";
+//		    }
+//		}
+		
 		@PostMapping("/login")
 		public String login(@RequestBody User user) {
-
-		    User validUser = userService.login(user.getEmail(), user.getPassword());
-
-		    if (validUser != null) {
-		        return "Login Success ✅";
-		    } else {
-		        return "Invalid Email or Password ❌";
-		    }
+		    return userService.login(user.getEmail(), user.getPassword());
 		}
 }
