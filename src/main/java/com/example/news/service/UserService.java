@@ -2,6 +2,8 @@ package com.example.news.service;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.news.config.JwtUtil;
 import com.example.news.model.User;
 import com.example.news.repository.UserRepository;
 
@@ -40,16 +42,28 @@ public class UserService {
 	}
 	
 	
-	public User login(String email, String password) {
+//	public User login(String email, String password) {
+//	    User user = userRepository.findByEmail(email).orElse(null);
+//
+//	    if (user != null && user.getPassword().equals(password)) {
+//	        return user;
+//	    }
+//	    return null;
+//	}
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	public String login(String email, String password) {
 	    User user = userRepository.findByEmail(email).orElse(null);
 
 	    if (user != null && user.getPassword().equals(password)) {
-	        return user;
+	        return jwtUtil.generateToken(email);
 	    }
-	    return null;
+	    return "Invalid Credentials";
 	}
-	
 }
+
 
 
 
