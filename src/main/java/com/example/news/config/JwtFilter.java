@@ -22,11 +22,11 @@ public class JwtFilter implements Filter {
         
         String path = req.getRequestURI();
 
-        if (path.contains("/login")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
+        if (path.startsWith("/api/users/login") || 
+        	    path.startsWith("/api/users/register")) {
+        	    chain.doFilter(request, response);
+        	    return;
+        	}
 
         String header = req.getHeader("Authorization");
 
