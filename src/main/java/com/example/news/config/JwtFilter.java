@@ -1,6 +1,5 @@
 package com.example.news.config;
 
-
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -19,27 +18,39 @@ public class JwtFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        
+
         String path = req.getRequestURI();
 
-        if (path.startsWith("/api/users/login") || 
-        	    path.startsWith("/api/users/register")) {
-        	    chain.doFilter(request, response);
-        	    return;
-        	}
+        // ✅ Allow public APIs (no token required)
+        if (path.contains("/login") || path.contains("/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         String header = req.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
-
-            try {
-                jwtUtil.validateToken(token); // we will create this
-            } catch (Exception e) {
-                throw new ServletException("Invalid Token");
-            }
-        } else {
+        // ❌ If token missing
+        if (header == null || !header.startsWith("Bearer ")) {
             throw new ServletException("Missing Token");
+        }
+
+        String token = header.substring(7);
+
+        try {
+            // ✅ Validate token
+            jwtUtil.validateToken(token);
+
+            // ✅ Day 10: Role-based check (only ADMIN can DELETE)
+            if ("DELETE".equalsIgnoreCase(req.getMethod())) {
+                String role = jwtUtil.extractRole(token);
+                if (!"ADMIN".equals(role)) {
+                    throw new ServletException("Access Denied ❌");
+                }
+            }
+
+        } catch (Exception e) {
+        	
+            throw new ServletException("Invalid Token");
         }
 
         chain.doFilter(request, response);
