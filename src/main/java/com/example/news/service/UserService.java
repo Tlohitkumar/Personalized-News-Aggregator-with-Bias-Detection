@@ -1,6 +1,7 @@
 package com.example.news.service;
 import java.util.*;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,8 @@ public class UserService {
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	public User registerUser(User user) {
-	    user.setPassword(encoder.encode(user.getPassword())); // 🔐 encrypt
+	    user.setPassword(encoder.encode(user.getPassword())); //  encrypt
+	    user.setRole("USER"); // default role					//day 10 update
 	    return userRepository.save(user);
 	}
 	
@@ -84,10 +86,14 @@ public class UserService {
 	    User user = userRepository.findByEmail(email).orElse(null);
 
 	    if (user != null && encoder.matches(password, user.getPassword())) {
-	        return jwtUtil.generateToken(email);
+	    	String role = user.getRole() != null ? user.getRole() : "USER";
+	        return jwtUtil.generateToken(user.getEmail(), user.getRole()); //day 10
 	    }
+	    
 	    return "Invalid Credentials";
 	}
+	
+	
 	
 }
 
