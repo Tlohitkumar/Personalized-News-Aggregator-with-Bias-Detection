@@ -21,7 +21,7 @@ public class JwtFilter implements Filter {
 
         String path = req.getRequestURI();
 
-        // ✅ Allow public APIs (no token required)
+        // ✅ Allow login & register
         if (path.contains("/login") || path.contains("/register")) {
             chain.doFilter(request, response);
             return;
@@ -29,7 +29,6 @@ public class JwtFilter implements Filter {
 
         String header = req.getHeader("Authorization");
 
-        // ❌ If token missing
         if (header == null || !header.startsWith("Bearer ")) {
             throw new ServletException("Missing Token");
         }
@@ -37,10 +36,8 @@ public class JwtFilter implements Filter {
         String token = header.substring(7);
 
         try {
-            // ✅ Validate token
             jwtUtil.validateToken(token);
 
-            // ✅ Day 10: Role-based check (only ADMIN can DELETE)
             if ("DELETE".equalsIgnoreCase(req.getMethod())) {
                 String role = jwtUtil.extractRole(token);
                 if (!"ADMIN".equals(role)) {
@@ -49,7 +46,6 @@ public class JwtFilter implements Filter {
             }
 
         } catch (Exception e) {
-        	
             throw new ServletException("Invalid Token");
         }
 
