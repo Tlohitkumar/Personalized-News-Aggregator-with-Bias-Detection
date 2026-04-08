@@ -1,6 +1,6 @@
 package com.example.news.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -14,7 +14,7 @@ public class User {
 
     private String name;
     private String email;
-    @JsonIgnore                //-> HIDE THE PASSWORD IN JSON
+    // @JsonIgnore                //-> HIDE THE PASSWORD IN JSON
     private String password;
     private String role;
     public User() {}
