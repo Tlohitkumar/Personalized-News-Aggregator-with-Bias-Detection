@@ -1,7 +1,10 @@
 package com.example.news.config;
 
 import jakarta.servlet.*;
+
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ public class JwtFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
         String path = req.getRequestURI();
 
@@ -30,7 +34,9 @@ public class JwtFilter implements Filter {
         String header = req.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
-            throw new ServletException("Missing Token");
+        	 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+             res.getWriter().write("Missing Token");
+             return;
         }
 
         String token = header.substring(7);
@@ -41,12 +47,16 @@ public class JwtFilter implements Filter {
             if ("DELETE".equalsIgnoreCase(req.getMethod())) {
                 String role = jwtUtil.extractRole(token);
                 if (!"ADMIN".equals(role)) {
-                    throw new ServletException("Access Denied ❌");
+                	 res.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
+                     res.getWriter().write("Access Denied ❌");
+                     return;
                 }
             }
 
         } catch (Exception e) {
-            throw new ServletException("Invalid Token");
+        	res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            res.getWriter().write("Invalid Token");
+            return;
         }
 
         chain.doFilter(request, response);
