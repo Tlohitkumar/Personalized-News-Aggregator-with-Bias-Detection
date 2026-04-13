@@ -23,8 +23,15 @@ public class JwtFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+     // ✅ Allow OPTIONS (CORS preflight)
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            chain.doFilter(request, response);
+            return;
+        }
+        
         String path = req.getRequestURI();
-
+        
+     
         // ✅ Allow login & register
         if (path.contains("/login") || path.contains("/register")) {
             chain.doFilter(request, response);
