@@ -22,6 +22,11 @@ public class JwtFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        
+     // ✅ CORS headers
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "*");
 
      // ✅ Allow OPTIONS (CORS preflight)
         if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {

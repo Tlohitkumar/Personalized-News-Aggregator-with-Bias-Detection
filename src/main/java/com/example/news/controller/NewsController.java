@@ -1,9 +1,11 @@
 package com.example.news.controller;
 
+
 import com.example.news.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/news")
 public class NewsController {
