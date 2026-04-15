@@ -38,7 +38,7 @@ public class JwtFilter implements Filter {
         
      
         // ✅ Allow login & register
-        if (path.contains("/login") || path.contains("/register")) {
+        if (path.contains("/login") || path.contains("/register") || path.contains("/news")) {
             chain.doFilter(request, response);
             return;
         }
