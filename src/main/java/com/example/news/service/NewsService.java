@@ -1,14 +1,20 @@
 package com.example.news.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
 
 @Service
 public class NewsService {
 
     private final String API_KEY = "131e3389587c43d8b6d4647545d18f6d";
 
-    public String getNews(String keyword, String category) {
+    @Autowired
+    private SentimentService sentimentService;
+
+    public Map<String, Object> getNews(String keyword, String category) {
 
         String url;
 
@@ -21,6 +27,23 @@ public class NewsService {
         }
 
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(url, String.class);
+
+        // 🔥 Convert response to Map
+        Map response = restTemplate.getForObject(url, Map.class);
+
+        List<Map<String, Object>> articles = (List<Map<String, Object>>) response.get("articles");
+
+        // 🔥 Add sentiment
+        for (Map<String, Object> article : articles) {
+
+            String title = (String) article.get("title");
+            String description = (String) article.get("description");
+
+            String sentiment = sentimentService.analyze(title + " " + description);
+
+            article.put("sentiment", sentiment);
+        }
+
+        return response;
     }
 }
