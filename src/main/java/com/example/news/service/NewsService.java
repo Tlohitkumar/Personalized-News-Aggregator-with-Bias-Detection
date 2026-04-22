@@ -39,9 +39,8 @@ public class NewsService {
             String title = (String) article.get("title");
             String description = (String) article.get("description");
 
-            String sentiment = sentimentService.analyze(title + " " + description);
-
-            article.put("sentiment", sentiment);
+            String bias = sentimentService.detectBias(title + " " + description);
+            article.put("bias", bias);
         }
 
         return response;
