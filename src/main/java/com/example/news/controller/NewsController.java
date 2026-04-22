@@ -2,6 +2,9 @@ package com.example.news.controller;
 
 
 import com.example.news.service.NewsService;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +23,7 @@ public class NewsController {
 //    }
     
     @GetMapping
-    public String getNews(
+    public Map<String, Object> getNews(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String category) {
 
