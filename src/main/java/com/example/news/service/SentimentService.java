@@ -9,19 +9,35 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class SentimentService {
 
-	public String detectBias(String text) {
+    // 😊 Full AI Report
+    public Map analyzeFull(String text) {
 
-	    RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
-	    Map<String, String> request = new HashMap<>();
-	    request.put("text", text);
+        Map<String, String> request = new HashMap<>();
+        request.put("text", text);
 
-	    Map response = restTemplate.postForObject(
-	            "http://localhost:5000/bias",
-	            request,
-	            Map.class
-	    );
+        return restTemplate.postForObject(
+                "http://localhost:5000/sentiment",
+                request,
+                Map.class
+        );
+    }
 
-	    return response.get("bias").toString();
-	}
+    // ⚖️ Bias Detection
+    public String detectBias(String text) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, String> request = new HashMap<>();
+        request.put("text", text);
+
+        Map response = restTemplate.postForObject(
+                "http://localhost:5000/bias",
+                request,
+                Map.class
+        );
+
+        return response.get("bias").toString();
+    }
 }
