@@ -56,7 +56,7 @@ public class NewsService {
 
             // 😊 Sentiment + Trust + Summary
             Map ai = sentimentService.analyzeFull(fullText);
-
+            
             article.put("sentiment", ai.get("sentiment"));
             article.put("trust", ai.get("trust"));
             article.put("summary", ai.get("summary"));
@@ -64,6 +64,9 @@ public class NewsService {
             // ⚖️ Bias Detection
             String bias = sentimentService.detectBias(fullText);
             article.put("bias", bias);
+            
+            String fakeStatus = sentimentService.detectFake(fullText);
+            article.put("fakeStatus", fakeStatus);
         }
 
         return response;

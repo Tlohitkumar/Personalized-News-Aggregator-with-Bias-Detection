@@ -40,4 +40,20 @@ public class SentimentService {
 
         return response.get("bias").toString();
     }
+    
+    public String detectFake(String text) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, String> request = new HashMap<>();
+        request.put("text", text);
+
+        Map response = restTemplate.postForObject(
+                "http://localhost:5000/fakecheck",
+                request,
+                Map.class
+        );
+
+        return response.get("fakeStatus").toString();
+    }
 }
