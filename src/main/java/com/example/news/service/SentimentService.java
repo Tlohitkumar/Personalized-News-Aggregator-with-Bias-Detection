@@ -18,7 +18,7 @@ public class SentimentService {
         request.put("text", text);
 
         return restTemplate.postForObject(
-                "http://localhost:5000/sentiment",
+        		"https://news-python-wi96.onrender.com/sentiment",
                 request,
                 Map.class
         );
@@ -49,7 +49,7 @@ public class SentimentService {
         request.put("text", text);
 
         Map response = restTemplate.postForObject(
-                "http://localhost:5000/fakecheck",
+        		"https://news-python-wi96.onrender.com/bias",
                 request,
                 Map.class
         );
