@@ -20,21 +20,19 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Get API path
         String path = request.getRequestURI();
 
-        // Public APIs (No Token Needed)
-        if (path.startsWith("/api/news")
-                || path.startsWith("/api/users")) {
+        // ✅ Public APIs
+        if (path.contains("/api/news")
+                || path.contains("/api/users")) {
 
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Protected APIs
+        // 🔒 Protected APIs
         String token = request.getHeader("Authorization");
 
-        // Missing Token
         if (token == null || token.isEmpty()) {
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -44,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Continue request
         filterChain.doFilter(request, response);
     }
 }
